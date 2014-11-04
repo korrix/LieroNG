@@ -1,0 +1,9 @@
+[submodule "lib/hump"]
+	path = lib/hump
+	url = git@github.com:vrld/hump.git
+[submodule "lib/underscore-lua"]
+	path = lib/underscore-lua
+	url = git@github.com:jtarchie/underscore-lua.git
+[submodule "lib/sti"]
+	path = lib/sti
+	url = git@github.com:karai17/Simple-Tiled-Implementation.git
