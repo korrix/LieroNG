@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="48" height="32" tilewidth="24" tileheight="24" backgroundcolor="#eeeeee">
+ <tileset firstgid="1" name="tileset" tilewidth="24" tileheight="24">
+  <image source="../gfx/tileset.png" trans="ff00ff" width="96" height="48"/>
+ </tileset>
+ <layer name="Background" width="48" height="32">
+  <data encoding="base64" compression="zlib">
+   eJztl+EOhSAIhS3n7f3f+F7XZXNMCgRFN8/GDyvqQ49LYgghLh6fcCuh8UzCbDCO6Dk8nkk11lH8xy9O5Tu8+DN7Xve85poaPPiBHaSpgctvtX8xO6ilBtivpSzmn/I1xV7ySGuw5qd8XWNPxDVJDZb8lK9rnDVd/5DUYOV/ra+BXZJn5f8evubmafl7+Zqbp+F/m3cpS0teq/+l7BwWuM/dR1z/W7E/sbTmJTSu8a8k4NeeCz2UfVH2MPj/2atXOhu/8cQ3Y7/1Jqr/WknlGqym7R9/bf/4afvHV9g/F4rZhf1jxT9yHvDZYpW5z+p5RhsZXwMUBMM=
+  </data>
+ </layer>
+ <objectgroup name="BackColider" visible="0">
+  <properties>
+   <property name="collidable" value="true"/>
+  </properties>
+  <object x="24" y="48">
+   <polyline points="0,0 24,-24 48,-24 72,0 72,336 120,288 96,288 96,216 120,192 96,192 96,120 120,96 96,96 96,0 120,-24 984,-24 1008,0 1008,96 984,96 1008,120 1008,192 984,192 1008,216 1008,288 984,288 1032,336 1032,0 1056,-24 1080,-24 1104,0 1104,360 1056,408 1080,408 1104,432 1104,456 1080,456 1080,480 1104,504 1104,528 1080,528 1080,552 1104,576 1104,600 1080,600 1080,624 1104,648 1104,672 1080,696 24,696 0,672 0,648 24,624 24,600 0,600 0,576 24,552 24,528 0,528 0,504 24,480 24,456 0,456 0,432 24,408 48,408 0,360 0,0"/>
+  </object>
+  <object x="408" y="192">
+   <polyline points="0,0 -192,192 -216,192 0,-24 216,192 192,192 0,0"/>
+  </object>
+  <object x="648" y="96">
+   <polyline points="0,0 -144,144 -168,120 -144,120 0,-24 312,288 288,288 0,0"/>
+  </object>
+  <object x="408" y="312">
+   <polyline points="0,0 24,-24 -24,-24 0,0"/>
+  </object>
+  <object x="768" y="360">
+   <polyline points="0,0 -24,-24 24,-24 0,0"/>
+  </object>
+  <object x="648" y="216">
+   <polyline points="0,0 -24,-24 24,-24 0,0"/>
+  </object>
+  <object x="144" y="432">
+   <polyline points="0,0 -24,24 552,24 528,0 0,0"/>
+  </object>
+  <object x="744" y="432">
+   <polyline points="0,0 -24,24 288,24 264,0 0,0"/>
+  </object>
+ </objectgroup>
+</map>

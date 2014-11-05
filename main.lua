@@ -9,7 +9,7 @@ require("lib.strict_override")
 require("lib.helpers")
 
 _         = require("lib.underscore-lua.lib.underscore")
-sti       = require("lib.sti.framework.love")
+sti       = require("lib.sti")
 
 Gamestate = require("lib.hump.gamestate")
 Class     = require("lib.hump.class")
@@ -23,9 +23,13 @@ Shader   = nil
 Sound    = nil
 Sprite   = nil
 Stage    = nil
+Level    = nil
+
+Width    = nil
+Height   = nil
 
 function love.load()
-  local Width, Height = love.window.getDimensions()
+  Width, Height = love.window.getDimensions()
   love.keyboard.setKeyRepeat(true)
 
   require("src.load_resources")

@@ -45,3 +45,7 @@ Sprite = Loader("gfx/", function(item_path, name)
   end
   return {image = image, quads = quads}
 end)
+
+Level = Loader("levels/", function(item_path, name)
+  return sti.new(item_path:gsub("%..+$", ""))
+end)

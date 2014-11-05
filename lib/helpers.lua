@@ -36,3 +36,7 @@ function coroutine.resume(...)
     end
     return state,result
 end
+
+function math.lerp(a, b, t)
+  return a + (b - a) * t
+end

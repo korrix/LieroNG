@@ -4,3 +4,6 @@
 common_class = nil
 common       = nil
 class_commons = nil
+
+-- STI
+id = nil
