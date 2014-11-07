@@ -1,11 +1,13 @@
 --- Main game stage.
 require("src.player")
 require("src.world")
+require("src.hud")
 
 local game = {}
 
 local world  = nil
 local player = nil
+local hud    = nil
 
 local lightMouse = nil -- debug only
 
@@ -18,6 +20,9 @@ function game:init()
     player = Player({c_physics, c_light, c_camera})
     world:set_camera(c_camera:get_camera())
 
+    hud = HUD()
+
+    -- debug only
     lightMouse = world.light.newLight(0, 0, 255, 127, 63, 300)
     lightMouse.setGlowStrength(0.3)
 end
@@ -25,7 +30,7 @@ end
 function game:update(dt)
     world:update(dt)
     player:update(dt)
-    -- hud:update() - TODO
+    hud:update(dt)
 
     lightMouse.setPosition(world.mouse.x, world.mouse.y)
 end
@@ -33,7 +38,7 @@ end
 function game:draw()
     LG.clear()
     world:draw({player})
-    -- hud:draw() - TODO
+    hud:draw()
 end
 
 function game:keypressed(key, code)
