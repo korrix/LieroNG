@@ -1,59 +1,38 @@
 --- Main game stage.
 require("src.player")
+require("src.world")
 
 local game = {}
 
-local active_level  = nil
-local world         = nil
-local player        = nil
+local world  = nil
+local player = nil
 
-local GFORCE       = 9.81
+local lightMouse = nil -- debug only
 
 function game:init()
-    -- Choose level
-    active_level = Level.testmap
+    world = World(Level.testmap)
 
-    -- Initialize physics
-    LP.setMeter(24)
-    world = LP.newWorld(0 * LP.getMeter(), GFORCE * LP.getMeter(), true)
-    active_level:initWorldCollision(world)
+    local c_physics = PhysicsComponent(world.physics, 48, 48)
+    local c_light   = FlashlightComponent(world.light, 48, 48)
+    local c_camera  = CameraComponent()
+    player = Player({c_physics, c_light, c_camera})
+    world:set_camera(c_camera:get_camera())
 
-    -- Create player
-    player = Player()
-    player:create_body(world, 48, 48)
-
-    -- Initialize scene background
-    LG.setBackgroundColor(128, 128, 128)
-
-    -- TODO Dynamic lighting system
+    lightMouse = world.light.newLight(0, 0, 255, 127, 63, 300)
+    lightMouse.setGlowStrength(0.3)
 end
 
 function game:update(dt)
     world:update(dt)
     player:update(dt)
-
     -- hud:update() - TODO
-    -- active_level:setDrawRange(tx, ty, Width, Height) - TODO
 
-    -- TODO refactor
-    local d = love.keyboard.isDown
-    if d("w") then player:look_up() end
-    if d("s") then player:look_down() end
-    if d("a") then player:move_left() end
-    if d("d") then player:move_right() end
-    if d("f") then player:shoot() end
-    if d("g") then
-        if d("h") then player:rope() else player:jump() end
-    end
+    lightMouse.setPosition(world.mouse.x, world.mouse.y)
 end
 
 function game:draw()
-    player.camera:attach()
-        LG.clear()
-        active_level:draw()
-        player:draw()
-    player.camera:detach()
-
+    LG.clear()
+    world:draw({player})
     -- hud:draw() - TODO
 end
 

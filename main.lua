@@ -1,12 +1,9 @@
--- Shortcuts
-L  = love
-LG = love.graphics
-LP = love.physics
-
 -- load libs
 require("lib.strict")
 require("lib.strict_override")
 require("lib.helpers")
+require("lib.light.postshader")
+require("lib.light.light")
 
 _         = require("lib.underscore-lua.lib.underscore")
 sti       = require("lib.sti")
@@ -17,6 +14,12 @@ Camera    = require("lib.hump.camera")
 Signal    = require("lib.hump.signal")
 Timer     = require("lib.hump.timer")
 
+-- Shortcuts
+L  = love
+LG = love.graphics
+LP = love.physics
+LL = love.light
+
 -- Global resource tables (loaded in load)
 Font     = nil
 Shader   = nil
@@ -25,8 +28,10 @@ Sprite   = nil
 Stage    = nil
 Level    = nil
 
-Width    = nil
-Height   = nil
+-- Global constants
+Width         = nil
+Height        = nil
+PLAYER_RADIUS = 12
 
 function love.load()
   Width, Height = love.window.getDimensions()

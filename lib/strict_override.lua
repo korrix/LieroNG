@@ -7,3 +7,6 @@ class_commons = nil
 
 -- STI
 id = nil
+
+-- Light and Shadow
+curPolygon = nil

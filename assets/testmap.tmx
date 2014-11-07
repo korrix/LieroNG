@@ -3,9 +3,12 @@
  <tileset firstgid="1" name="tileset" tilewidth="24" tileheight="24">
   <image source="../gfx/tileset.png" trans="ff00ff" width="96" height="48"/>
  </tileset>
+ <imagelayer name="Paralax1" x="-120">
+  <image source="../gfx/background.jpg"/>
+ </imagelayer>
  <layer name="Background" width="48" height="32">
   <data encoding="base64" compression="zlib">
-   eJztl+EOhSAIhS3n7f3f+F7XZXNMCgRFN8/GDyvqQ49LYgghLh6fcCuh8UzCbDCO6Dk8nkk11lH8xy9O5Tu8+DN7Xve85poaPPiBHaSpgctvtX8xO6ilBtivpSzmn/I1xV7ySGuw5qd8XWNPxDVJDZb8lK9rnDVd/5DUYOV/ra+BXZJn5f8evubmafl7+Zqbp+F/m3cpS0teq/+l7BwWuM/dR1z/W7E/sbTmJTSu8a8k4NeeCz2UfVH2MPj/2atXOhu/8cQ3Y7/1Jqr/WknlGqym7R9/bf/4afvHV9g/F4rZhf1jxT9yHvDZYpW5z+p5RhsZXwMUBMM=
+   eJztl9EOwyAIRV2N+/9PXs1CYohYEByyeBMfaEt70GsqOaWUg493+qqgeCdhNogzeg7HO6nH+iv+1z0u5Tu8+Ct7Xfe65poaPPiBHaSpgctvtX8xO2imBtivrSzmn/I1xd7ySGuw5qd83WMvxDVJDZb8lK97nCNJarDyv6WvuXlW/l/ha26eln+Vr7l5Gv6neZeyzOTN+l/KzmGB+9x9xPW/FfuIZTavoLjHH0nArz0Xeqj6ou1h8P9zVa90TX5jxLdjv/Ukqv+KpHYNoun4x1/HP346/vHV8Y+//un8FnV8AF3DBEU=
   </data>
  </layer>
  <objectgroup name="BackColider" visible="0">
@@ -35,6 +38,32 @@
   </object>
   <object x="744" y="432">
    <polyline points="0,0 -24,24 288,24 264,0 0,0"/>
+  </object>
+ </objectgroup>
+ <objectgroup name="LightCollider" visible="0">
+  <properties>
+   <property name="shadow" value="true"/>
+  </properties>
+  <object x="0" y="0">
+   <polygon points="0,0 0,768 1152,768 1152,0 0,0 24,48 48,24 72,24 96,48 96,384 144,336 120,336 120,264 144,240 120,240 120,168 144,144 120,144 120,48 144,24 1008,24 1032,48 1032,144 1008,144 1032,168 1032,240 1008,240 1032,264 1032,336 1008,336 1056,384 1056,48 1080,24 1104,24 1128,48 1128,408 1080,456 1104,456 1128,480 1128,504 1104,504 1104,528 1128,552 1128,576 1104,576 1104,600 1128,624 1128,648 1104,648 1104,672 1128,696 1128,720 1104,744 48,744 24,720 24,696 48,672 48,648 24,648 24,624 48,600 48,576 24,576 24,552 48,528 48,504 24,504 24,480 48,456 72,456 24,408 24,48"/>
+  </object>
+  <object x="120" y="456">
+   <polygon points="0,0 24,-24 552,-24 576,0"/>
+  </object>
+  <object x="720" y="456">
+   <polygon points="0,0 24,-24 288,-24 312,0"/>
+  </object>
+  <object x="192" y="384">
+   <polygon points="0,0 216,-216 432,0 408,0 216,-192 24,0"/>
+  </object>
+  <object x="384" y="288">
+   <polygon points="0,0 24,24 48,0"/>
+  </object>
+  <object x="624" y="192">
+   <polygon points="0,0 24,24 48,0"/>
+  </object>
+  <object x="480" y="216">
+   <polygon points="0,0 24,24 168,-120 456,168 480,168 168,-144 24,0"/>
   </object>
  </objectgroup>
 </map>
