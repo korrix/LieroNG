@@ -7,3 +7,6 @@
 [submodule "lib/sti"]
 	path = lib/sti
 	url = git@github.com:karai17/Simple-Tiled-Implementation.git
+[submodule "lib/inspect"]
+	path = lib/inspect
+	url = https://github.com/kikito/inspect.lua

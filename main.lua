@@ -6,6 +6,7 @@ require("lib.light.postshader")
 require("lib.light.light")
 
 _         = require("lib.underscore-lua.lib.underscore")
+inspect   = require("lib.inspect.inspect")
 sti       = require("lib.sti")
 
 Gamestate = require("lib.hump.gamestate")
@@ -13,6 +14,7 @@ Class     = require("lib.hump.class")
 Camera    = require("lib.hump.camera")
 Signal    = require("lib.hump.signal")
 Timer     = require("lib.hump.timer")
+Vector    = require("lib.hump.vector")
 
 -- Shortcuts
 L  = love
@@ -35,7 +37,6 @@ PLAYER_RADIUS = 12
 
 function love.load()
   Width, Height = love.window.getDimensions()
-  love.keyboard.setKeyRepeat(true)
 
   require("src.load_resources")
 

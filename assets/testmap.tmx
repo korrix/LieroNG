@@ -65,5 +65,8 @@
   <object x="480" y="216">
    <polygon points="0,0 24,24 168,-120 456,168 480,168 168,-144 24,0"/>
   </object>
+  <object x="744" y="336">
+   <polygon points="0,0 48,0 24,24"/>
+  </object>
  </objectgroup>
 </map>

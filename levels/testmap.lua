@@ -515,6 +515,23 @@ return {
             { x = 24, y = 0 }
           },
           properties = {}
+        },
+        {
+          name = "",
+          type = "",
+          shape = "polygon",
+          x = 744,
+          y = 336,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          polygon = {
+            { x = 0, y = 0 },
+            { x = 48, y = 0 },
+            { x = 24, y = 24 }
+          },
+          properties = {}
         }
       }
     }

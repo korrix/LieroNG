@@ -10,10 +10,36 @@ function World:init(level)
     self:__init_light()
 end
 
+function beginContact(a, b, coll)
+    local a_obj, b_obj = a:getUserData(), b:getUserData()
+    if b_obj.type == "player" and a_obj.type == "ground" then
+        b_obj.setCanJump(true)
+        b_obj.setJumpDirection(coll:getNormal())
+    end
+end
+
+function endContact(a, b, coll)
+    local a_obj, b_obj = a:getUserData(), b:getUserData()
+    if b_obj.type == "player" and a_obj.type == "ground" then
+        b_obj.setCanJump(false)
+    end
+end
+
+function preSolve(a, b, coll)
+end
+
+function postSolve(a, b, coll)
+end
+
 function World:__init_physics()
     LP.setMeter(24)
     self.physics = LP.newWorld(0, GFORCE * LP.getMeter(), true)
-    self.level:initWorldCollision(self.physics)
+    self.physics:setCallbacks(beginContact, endContact, preSolve, postSolve)
+
+    local bgBodies = self.level:initWorldCollision(self.physics)
+    _.each(bgBodies, function(body)
+        body.fixture:setUserData({type = "ground"})
+    end)
 end
 
 function World:__init_light()

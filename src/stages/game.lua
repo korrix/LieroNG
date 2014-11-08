@@ -1,13 +1,15 @@
 --- Main game stage.
 require("src.player")
+require("src.controller")
 require("src.world")
 require("src.hud")
 
 local game = {}
 
-local world  = nil
-local player = nil
-local hud    = nil
+local world      = nil
+local player     = nil
+local controller = nil
+local hud        = nil
 
 local lightMouse = nil -- debug only
 
@@ -18,6 +20,7 @@ function game:init()
     local c_light   = FlashlightComponent(world.light, 48, 48)
     local c_camera  = CameraComponent()
     player = Player({c_physics, c_light, c_camera})
+    controller = Controller()
     world:set_camera(c_camera:get_camera())
 
     hud = HUD()
@@ -28,6 +31,7 @@ function game:init()
 end
 
 function game:update(dt)
+    controller:update(dt)
     world:update(dt)
     player:update(dt)
     hud:update(dt)
@@ -42,7 +46,11 @@ function game:draw()
 end
 
 function game:keypressed(key, code)
+    controller:keypressed(key)
+end
 
+function game:keyreleased(key, code)
+    controller:keyreleased(key)
 end
 
 function game:mousepressed(x, y, button)
