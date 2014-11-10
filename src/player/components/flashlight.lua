@@ -8,7 +8,7 @@ function FlashlightComponent:init(world, x, y)
     self.light.setSmooth(0.5)
 
     self.body = world.newCircle(x, y, PLAYER_RADIUS)
-    self.light.setAngle(3.14 * 1/6)
+    self.light.setAngle(math.pi / 3)
 
     self.active = true
 

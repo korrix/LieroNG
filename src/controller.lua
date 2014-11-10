@@ -20,7 +20,10 @@ function Controller:init()
                      , s = s('key:down')
                      },
 
-        press_main = {h = function() self.mod_active = true end},
+        press_main = { h = function() self.mod_active = true end
+                     , a = s('key:left_press')
+                     , d = s('key:right_press')
+                     },
 
         press_mod = { a = s('key:weapon_prev')
                     , d = s('key:weapon_next')

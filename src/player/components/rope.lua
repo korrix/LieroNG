@@ -1,7 +1,7 @@
 RopeComponent = Class {__includes = Component}
 
 local RopeState = {inactive = -1, midair = 0, active = 1}
-local ROPE_LENGTH = 150
+local ROPE_LENGTH = 250
 
 function RopeComponent:init(world, player_body)
     self.length      = ROPE_LENGTH
@@ -37,11 +37,12 @@ end
 function RopeComponent:throw()
     self.state = RopeState.midair
     self.body:setActive(true)
-    local vec = Vector(0, -10):rotated(self.direction)
-    self.body:applyLinearImpulse(vec.x, vec.y)
+    local vec = Vector(0, -1000):rotated(self.direction)
+    self.body:applyForce(vec.x, vec.y)
 end
 
 function RopeComponent:catch()
+    self:update_inactive()
     self.body:setActive(false)
     if self.rope_joint then
         self.rope_joint:destroy()
@@ -60,18 +61,17 @@ function RopeComponent:trigger()
         self:catch()
     elseif self.state == RopeState.active then
         self:catch()
-        -- self:throw()
         Timer.add(0.1, function () self:throw() end)
     end
 end
 
-function RopeComponent:update_inactive(player)
+function RopeComponent:update_inactive()
     self.body:setX(self:getInactive().x)
     self.body:setY(self:getInactive().y)
-    self.body:setLinearVelocity(0, 0)
+    self.body:setLinearVelocity(self.player_body:getLinearVelocity())
 end
 
-function RopeComponent:update_midair(player)
+function RopeComponent:update_midair()
     local a_obj = self.fixture:getUserData()
     if a_obj.collision then
         -- Destroy rope joint
@@ -81,12 +81,10 @@ function RopeComponent:update_midair(player)
         local vec  = a_obj.collision.position
         local bvec = Vector(self.player_body:getX(), self.player_body:getY())
 
-        local length = math.min(vec:dist(bvec), ROPE_LENGTH)
-
         self.rope_joint:destroy()
         self.rope_joint = LP.newRopeJoint(
             self.player_body, a_obj.collision.body,
-            bvec.x, bvec.y, vec.x, vec.y, length, true)
+            bvec.x, bvec.y, vec.x, vec.y, ROPE_LENGTH, true)
 
         -- Set the marker position
         self.body:setX(vec.x)
@@ -100,7 +98,7 @@ function RopeComponent:update_midair(player)
     end
 end
 
-function RopeComponent:update_active(player)
+function RopeComponent:update_active()
     self.body:setLinearVelocity(0, 0)
 end
 
@@ -108,11 +106,11 @@ function RopeComponent:update(player, dt)
     self.direction = -player.direction
 
     if self.state == RopeState.inactive then
-        self:update_inactive(player)
+        self:update_inactive()
     elseif self.state == RopeState.midair then
-        self:update_midair(player)
+        self:update_midair()
     elseif self.state == RopeState.active then
-        self:update_active(player)
+        self:update_active()
     end
 end
 
