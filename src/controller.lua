@@ -18,18 +18,18 @@ function Controller:init()
 
         update_mod = { w = s('key:up')
                      , s = s('key:down')
+                     , a = s('key:left')
+                     , d = s('key:right')
+                     , f = s('key:climb')
                      },
 
         press_main = { h = function() self.mod_active = true end
                      , a = s('key:left_press')
                      , d = s('key:right_press')
+                     , q = s('key:flashlight_toggle')
                      },
 
-        press_mod = { a = s('key:weapon_prev')
-                    , d = s('key:weapon_next')
-                    , f = s('key:flashlight_toggle')
-                    , g = s('key:rope')
-                    },
+        press_mod = { g = s('key:rope') },
 
         relase_main = {},
         relase_mod = {h = function() self.mod_active = false end},

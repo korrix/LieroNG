@@ -50,17 +50,3 @@ function Player:draw()
         component:draw(self)
     end)
 end
-
-
-
--- function Player:look_up()
--- end
-
--- function Player:look_down()
--- end
-
--- function Player:shoot()
--- end
-
--- function Player:rope()
--- end

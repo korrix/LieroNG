@@ -1,7 +1,9 @@
 RopeComponent = Class {__includes = Component}
 
 local RopeState = {inactive = -1, midair = 0, active = 1}
-local ROPE_LENGTH = 250
+local ROPE_LENGTH    = 250
+local THROW_STRENGTH = 1000
+local CLIMB_DRAG     = 1.3
 
 function RopeComponent:init(world, player_body)
     self.length      = ROPE_LENGTH
@@ -18,8 +20,9 @@ function RopeComponent:init(world, player_body)
     self.fixture:setUserData({type = "rope", collision = nil})
 
     self.rope_joint = nil
-    self:catch()
+    self.spot = nil
 
+    self:catch()
 
     Signal.register("key:rope", function ()
         self:trigger()
@@ -27,6 +30,15 @@ function RopeComponent:init(world, player_body)
 
     Signal.register("key:jump", function ()
         if self.state == RopeState.active then self:catch() end
+    end)
+
+    Signal.register("key:climb", function ()
+        if self.state == RopeState.active and self.spot then
+            local antigravity = -Vector(world:getGravity()) * self.player_body:getMass()
+            local direction = self.spot - Vector(self.player_body:getX(), self.player_body:getY())
+            local rope_pull = direction:normalized() * antigravity:len() * CLIMB_DRAG
+            self.player_body:applyForce(rope_pull:unpack())
+        end
     end)
 end
 
@@ -37,11 +49,12 @@ end
 function RopeComponent:throw()
     self.state = RopeState.midair
     self.body:setActive(true)
-    local vec = Vector(0, -1000):rotated(self.direction)
+    local vec = Vector(0, -THROW_STRENGTH):rotated(self.direction)
     self.body:applyForce(vec.x, vec.y)
 end
 
 function RopeComponent:catch()
+    self.spot = nil
     self:update_inactive()
     self.body:setActive(false)
     if self.rope_joint then
@@ -78,17 +91,17 @@ function RopeComponent:update_midair()
         self.body:setActive(false)
 
         -- Create swing joint
-        local vec  = a_obj.collision.position
+        self.spot  = a_obj.collision.position
         local bvec = Vector(self.player_body:getX(), self.player_body:getY())
 
         self.rope_joint:destroy()
         self.rope_joint = LP.newRopeJoint(
             self.player_body, a_obj.collision.body,
-            bvec.x, bvec.y, vec.x, vec.y, ROPE_LENGTH, true)
+            bvec.x, bvec.y, self.spot.x, self.spot.y, ROPE_LENGTH, true)
 
         -- Set the marker position
-        self.body:setX(vec.x)
-        self.body:setY(vec.y)
+        self.body:setX(self.spot.x)
+        self.body:setY(self.spot.y)
 
         -- Clear the colision
         a_obj.collision = nil
