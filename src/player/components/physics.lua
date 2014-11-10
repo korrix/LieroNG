@@ -44,11 +44,11 @@ function PhysicsComponent:update(player, dt)
 end
 
 function PhysicsComponent:move_right()
-    self.body:applyForce(400, 0)
+    self.body:applyForce(100, 0)
 end
 
 function PhysicsComponent:move_left()
-    self.body:applyForce(-400, 0)
+    self.body:applyForce(-100, 0)
 end
 
 function PhysicsComponent:jump()
@@ -56,8 +56,4 @@ function PhysicsComponent:jump()
     if self.canJump then
         self.body:applyLinearImpulse(self.jumpDirection.x, self.jumpDirection.y)
     end
-end
-
--- TODO
-function PhysicsComponent:rope()
 end

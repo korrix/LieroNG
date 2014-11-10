@@ -15,15 +15,17 @@ local lightMouse = nil -- debug only
 
 function game:init()
     world = World(Level.testmap)
+    hud   = HUD()
 
     local c_physics = PhysicsComponent(world.physics, 48, 48)
     local c_light   = FlashlightComponent(world.light, 48, 48)
+    local c_rope    = RopeComponent(world.physics, c_physics.body)
     local c_camera  = CameraComponent()
-    player = Player({c_physics, c_light, c_camera})
+    local c_sprite  = SpriteComponent()
+    player = Player({c_physics, c_sprite, c_rope, c_light, c_camera})
+
     controller = Controller()
     world:set_camera(c_camera:get_camera())
-
-    hud = HUD()
 
     -- debug only
     lightMouse = world.light.newLight(0, 0, 255, 127, 63, 300)

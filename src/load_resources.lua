@@ -1,5 +1,6 @@
 --- Lazy resource loader
 
+-- TODO: Make this lazier
 local function Loader(directory, load_item)
   local ret = {}
   local files = love.filesystem.getDirectoryItems(directory)

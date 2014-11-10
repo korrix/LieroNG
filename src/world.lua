@@ -12,9 +12,17 @@ end
 
 function beginContact(a, b, coll)
     local a_obj, b_obj = a:getUserData(), b:getUserData()
-    if b_obj.type == "player" and a_obj.type == "ground" then
+    if a_obj.type == "ground" and b_obj.type == "player" then
         b_obj.setCanJump(true)
         b_obj.setJumpDirection(coll:getNormal())
+    end
+
+    if b_obj.type == "rope" then
+        local x1, y1, x2, y2 = coll:getPositions()
+        b_obj.collision = { body = a:getBody()
+                          , position = Vector(x1, y1)
+                          }
+        b:setUserData(b_obj)
     end
 end
 

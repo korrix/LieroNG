@@ -3,8 +3,17 @@ Player = Class {}
 function Player:init(components)
     self.x = 0
     self.y = 0
+    self.direction = 3.14 / 45
 
     self.components = components
+
+    Signal.register('key:up', function()
+        Timer.tween(0.2, self, {direction = self.direction + 3.14 / 45})
+    end)
+
+    Signal.register('key:down', function()
+        Timer.tween(0.2, self, {direction = self.direction - 3.14 / 45})
+    end)
 end
 
 function Player:register_component(component)
@@ -19,9 +28,9 @@ function Player:update(dt)
 end
 
 function Player:draw()
-    LG.setColor(255, 0, 0, 255)
-    LG.circle("fill", self.x, self.y, PLAYER_RADIUS)
-    LG.setColor(255, 255, 255, 255)
+    _.each(self.components, function(component)
+        component:draw(self)
+    end)
 end
 
 
