@@ -1,3 +1,5 @@
+require("src.player.component")
+
 PhysicsComponent = Class {__includes = Component}
 
 local JUMP_SIZE = 64
@@ -52,8 +54,9 @@ function PhysicsComponent:move_left()
 end
 
 function PhysicsComponent:jump()
-    -- TODO Proper jumping
     if self.canJump then
         self.body:applyLinearImpulse(self.jumpDirection.x, self.jumpDirection.y)
     end
 end
+
+return PhysicsComponent

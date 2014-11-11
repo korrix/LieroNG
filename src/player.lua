@@ -1,9 +1,7 @@
+require("lib.lazy_loader")
 require("src.player.player")
 
--- TODO: Dynamic components loader
-require("src.player.component")
-require("src.player.components.camera")
-require("src.player.components.flashlight")
-require("src.player.components.physics")
-require("src.player.components.rope")
-require("src.player.components.sprite")
+Component = Loader("src/player/components/", function(item_path)
+  local req_path = item_path:gsub("%..+$", ""):gsub("/", ".")
+  return require(req_path)
+end)

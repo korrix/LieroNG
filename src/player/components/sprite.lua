@@ -1,3 +1,5 @@
+require("src.player.component")
+
 SpriteComponent = Class {__includes = Component}
 
 function SpriteComponent:draw(player)
@@ -5,3 +7,5 @@ function SpriteComponent:draw(player)
     LG.circle("fill", player.x, player.y, PLAYER_RADIUS)
     LG.setColor(255, 255, 255, 255)
 end
+
+return SpriteComponent

@@ -27,7 +27,7 @@ function Player:init(components)
 
     Signal.register('key:left_press', function()
         if self.direction >= math.pi then
-            self.direction = 2 * math.pi - self.direction-- math.pi + self.direction
+            self.direction = 2 * math.pi - self.direction
         end
     end)
 end

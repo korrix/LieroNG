@@ -1,7 +1,9 @@
+require("src.player.component")
+
 FlashlightComponent = Class {__includes = Component}
 
--- TODO Directional flashlight
 local FLASHLIGHT_RANGE = 500
+
 function FlashlightComponent:init(world, x, y)
     self.light = world.newLight(x, y, 255, 127, 63, FLASHLIGHT_RANGE)
     self.light.setGlowStrength(0.1)
@@ -29,3 +31,5 @@ function FlashlightComponent:update(player, dt)
     self.body.setX(player.x)
     self.body.setY(player.y)
 end
+
+return FlashlightComponent

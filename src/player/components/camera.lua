@@ -1,3 +1,5 @@
+require("src.player.component")
+
 CameraComponent = Class {__includes = Component}
 
 function CameraComponent:init()
@@ -15,3 +17,5 @@ function CameraComponent:update(player, dt)
     local newY = camY - (camY - player.y) * dt * self.movementSoftness
     self.camera:lookAt(newX, newY)
 end
+
+return CameraComponent

@@ -1,3 +1,5 @@
+require("src.player.component")
+
 RopeComponent = Class {__includes = Component}
 
 local RopeState = {inactive = -1, midair = 0, active = 1}
@@ -133,3 +135,5 @@ function RopeComponent:draw(player)
     LG.line(player.x, player.y, self.body:getX(), self.body:getY())
     LG.setColor(255, 255, 255, 255)
 end
+
+return RopeComponent

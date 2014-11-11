@@ -112,6 +112,5 @@ function World:draw(objects)
 
     love.postshader.addEffect("bloom", 2.0, 2.0)
     love.postshader.addEffect("scanlines")
-    -- love.postshader.addEffect("blur", 10.0)
     love.postshader.draw()
 end
