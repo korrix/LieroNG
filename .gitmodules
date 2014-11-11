@@ -6,7 +6,7 @@
 	url = git@github.com:jtarchie/underscore-lua.git
 [submodule "lib/sti"]
 	path = lib/sti
-	url = git@github.com:karai17/Simple-Tiled-Implementation.git
+	url = git@github.com:korrix/Simple-Tiled-Implementation.git
 [submodule "lib/inspect"]
 	path = lib/inspect
 	url = https://github.com/kikito/inspect.lua

@@ -10,3 +10,4 @@ id = nil
 
 -- Light and Shadow
 curPolygon = nil
+args       = nil

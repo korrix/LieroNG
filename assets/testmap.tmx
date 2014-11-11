@@ -3,8 +3,8 @@
  <tileset firstgid="1" name="tileset" tilewidth="24" tileheight="24">
   <image source="../gfx/tileset.png" trans="ff00ff" width="96" height="48"/>
  </tileset>
- <imagelayer name="Paralax1" x="-120">
-  <image source="../gfx/background.jpg"/>
+ <imagelayer name="Parallax1" x="-216" y="-240">
+  <image source="../gfx/background.jpg" trans="ff00ff"/>
  </imagelayer>
  <layer name="Background" width="48" height="32">
   <data encoding="base64" compression="zlib">

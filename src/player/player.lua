@@ -12,11 +12,11 @@ function Player:init(components)
     end
 
     Signal.register('key:up', function()
-        tween_direction(self.direction - math.pi / 45)
+        tween_direction(self.direction - math.pi / 90)
     end)
 
     Signal.register('key:down', function()
-        tween_direction(self.direction + math.pi / 45)
+        tween_direction(self.direction + math.pi / 90)
     end)
 
     Signal.register('key:right_press', function()

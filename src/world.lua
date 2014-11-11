@@ -53,6 +53,8 @@ end
 function World:__init_light()
     self.light = LL.newWorld()
     self.light.setAmbientColor(15, 15, 31)
+    self.light.setRefractionStrength(16.0)
+    self.light.setReflectionVisibility(0.75)
 
     -- TODO refactor getting by layer name to getting by property
     -- TODO loading static lights from TMX
@@ -85,11 +87,16 @@ function World:set_camera(camera)
 end
 
 function World:draw(objects)
-    self.camera:attach()
     self.light.setTranslation(get_light_translation(self.camera))
-    self.light.update()
 
+    self.camera:attach()
+
+    self.light.update()
+    love.postshader.setBuffer("render")
+
+    LG.setBlendMode("alpha")
     self.level:draw()
+
     _.each(objects, function(obj)
         obj:draw()
     end)
@@ -101,7 +108,10 @@ function World:draw(objects)
     self.light.drawReflection()
     self.light.drawRefraction()
 
-    love.postshader.draw()
-
     self.camera:detach()
+
+    love.postshader.addEffect("bloom", 2.0, 2.0)
+    love.postshader.addEffect("scanlines")
+    -- love.postshader.addEffect("blur", 10.0)
+    love.postshader.draw()
 end
