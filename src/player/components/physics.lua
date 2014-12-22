@@ -55,6 +55,17 @@ function PhysicsComponent:update(dt)
     self.player.y = self.body:getY()
 end
 
+function PhysicsComponent:respawn()
+    if self.player.world.physics:isLocked() then
+        Timer.add(0.1, function ()
+            self:respawn()
+        end)
+        return
+    end
+    self.body:setX(self.player.spawn_x)
+    self.body:setY(self.player.spawn_y)
+end
+
 function PhysicsComponent:move_right()
     self.body:applyForce(100, 0)
 end

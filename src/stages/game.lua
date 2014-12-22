@@ -25,11 +25,10 @@ function create_player(world, x, y)
 end
 
 function game:init()
-    world = World(Level.testmap)
-    hud   = HUD()
-
+    world        = World(Level.testmap)
     local_player = create_player(world, 64, 64)
-    create_player(world, 192, 64)
+    hud          = HUD(create_player(world, 192, 64))
+
     local c_camera = Component.camera(local_player)
     controller = Controller(local_player.id)
     world:set_camera(c_camera:get_camera())
@@ -48,8 +47,7 @@ end
 
 function game:draw()
     LG.clear()
-    world:draw(players)
-    hud:draw()
+    world:draw(players, hud)
 end
 
 function game:keypressed(key, code)

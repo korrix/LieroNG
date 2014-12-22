@@ -5,11 +5,19 @@ PlayerIdFactory = 1
 function Player:init(world, x, y)
     self.world = world
 
+    self.life   = 100
+    self.deaths = 0
+    self.kills  = 0
+
     self.x = x
     self.y = y
+    self.spawn_x = x
+    self.spawn_y = y
+
     self.direction = -math.pi / 4
 
     self.components = {}
+    self.hud_variables = {}
 
     self.id = PlayerIdFactory
     PlayerIdFactory = PlayerIdFactory + 1 -- FIXME: Very nasty solution
@@ -37,6 +45,33 @@ function Player:init(world, x, y)
             self.direction = 2 * math.pi - self.direction
         end
     end)
+
+    self:register('action:hit', function (cause, frag)
+        self.life = self.life - frag
+        if self.life < 0 then
+            self.life = 0
+            self:die()
+            Signal.emit('action:killed', cause)
+        end
+    end)
+
+    self:register('action:killed', function ()
+        self.kills = self.kills + 1
+    end)
+
+    self:register_hud({
+        life   = function () return self.life end,
+        kills  = function () return self.deaths end,
+        deaths = function () return self.kills end
+    })
+end
+
+function Player:die()
+    self.deaths = self.deaths + 1
+    _.each(self.components, function(component)
+        component:respawn()
+    end)
+    self.life = 100
 end
 
 function Player:register(signal, action)
@@ -49,6 +84,10 @@ end
 
 function Player:emit(signal, ...)
     Signal.emit(signal, self.id, ...)
+end
+
+function Player:register_hud(variables)
+    _.extend(self.hud_variables, variables)
 end
 
 function Player:register_component(component)

@@ -95,7 +95,7 @@ function World:set_camera(camera)
     self.camera = camera
 end
 
-function World:draw(objects)
+function World:draw(objects, hud)
     self.light.setTranslation(get_light_translation(self.camera))
 
     self.camera:attach()
@@ -118,6 +118,8 @@ function World:draw(objects)
     self.light.drawRefraction()
 
     self.camera:detach()
+
+    hud:draw()
 
     love.postshader.addEffect("bloom", 2.0, 2.0)
     love.postshader.addEffect("scanlines")

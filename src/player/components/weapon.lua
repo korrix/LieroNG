@@ -2,7 +2,7 @@ require("src.player.component")
 
 WeaponComponent = Class {__includes = Component}
 
-local LOAD_LAG  = 0.5
+local LOAD_LAG  = 0.1
 local RELOAD_TIME = 1
 local ROUND_SIZE = 12
 
@@ -18,7 +18,6 @@ function WeaponComponent:init(player)
     self.world  = player.world.physics
 
     self.active = false
-    self.radius = 10
 
     self.load_level = 0
     self.ammo = ROUND_SIZE
@@ -32,11 +31,17 @@ function WeaponComponent:init(player)
     player:register("key:trigger_relase", function()
         self.active = false
     end)
+
+    player:register_hud({
+        load_level  = function () return self.load_level end,
+        ammo        = function () return self.ammo end,
+        round_size  = function () return ROUND_SIZE end
+    })
 end
 
 function WeaponComponent:update(dt)
-    if self.load_level < LOAD_LAG then
-        self.load_level = self.load_level + dt
+    if self.load_level < 1 and self.ammo > 0 then
+        self.load_level = self.load_level + dt * (1 - LOAD_LAG)
     elseif self.active then
         self.load_level = 0
         self:shoot()
@@ -58,13 +63,14 @@ function WeaponComponent:update(dt)
 end
 
 function WeaponComponent:shoot()
-    if self.ammo > 0 and self.player then
+    if self.ammo > 0 then
         self:fire()
         self.ammo = self.ammo - 1
-    else
-        Timer.add(RELOAD_TIME, function ()
-            self.ammo = ROUND_SIZE
-        end)
+        if self.ammo < 1 then
+            Timer.add(RELOAD_TIME, function ()
+                self.ammo = ROUND_SIZE
+            end)
+        end
     end
 end
 
@@ -77,11 +83,12 @@ function WeaponComponent:fire()
     bullet.fixture = LP.newFixture(bullet.body, bullet.shape, 1)
     bullet.fixture:setRestitution(0.5)
 
-    local frag = math.floor(BULLET_FRAG * love.math.randomNormal(1, 0.75))
+    local frag = math.floor(BULLET_FRAG * math.abs(love.math.randomNormal(1, 0.75)))
     bullet.fixture:setUserData({
         type = "bullet", collision = nil,
         owner = self.player.id, frag = frag,
-        life = BULLET_LIFETIME})
+        life = BULLET_LIFETIME
+    })
 
     bullet.fixture:setCategory(self.player.id)
     bullet.fixture:setMask(self.player.id)

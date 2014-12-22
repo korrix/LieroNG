@@ -5,3 +5,6 @@ end
 
 function Component:draw()
 end
+
+function Component:respawn()
+end
