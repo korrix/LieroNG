@@ -1,7 +1,7 @@
 Component = Class {}
 
-function Component:update(player, dt)
+function Component:update(dt)
 end
 
-function Component:draw(player)
+function Component:draw()
 end

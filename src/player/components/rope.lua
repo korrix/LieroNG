@@ -7,7 +7,11 @@ local ROPE_LENGTH    = 250
 local THROW_STRENGTH = 1000
 local CLIMB_DRAG     = 1.3
 
-function RopeComponent:init(world, player_body)
+function RopeComponent:init(player, player_body)
+    player:register_component(self)
+    self.player = player
+    local world = player.world.physics
+
     self.length      = ROPE_LENGTH
     self.direction   = 0
     self.state       = RopeState.inactive
@@ -117,8 +121,8 @@ function RopeComponent:update_active()
     self.body:setLinearVelocity(0, 0)
 end
 
-function RopeComponent:update(player, dt)
-    self.direction = -player.direction
+function RopeComponent:update(dt)
+    self.direction = -self.player.direction
 
     if self.state == RopeState.inactive then
         self:update_inactive()
@@ -129,10 +133,10 @@ function RopeComponent:update(player, dt)
     end
 end
 
-function RopeComponent:draw(player)
+function RopeComponent:draw()
     LG.setColor(0, 0, 255, 255)
     LG.circle("fill", self.body:getX(), self.body:getY(), PLAYER_RADIUS / 3)
-    LG.line(player.x, player.y, self.body:getX(), self.body:getY())
+    LG.line(self.player.x, self.player.y, self.body:getX(), self.body:getY())
     LG.setColor(255, 255, 255, 255)
 end
 

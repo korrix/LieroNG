@@ -4,12 +4,16 @@ FlashlightComponent = Class {__includes = Component}
 
 local FLASHLIGHT_RANGE = 500
 
-function FlashlightComponent:init(world, x, y)
-    self.light = world.newLight(x, y, 255, 127, 63, FLASHLIGHT_RANGE)
+function FlashlightComponent:init(player)
+    player:register_component(self)
+    self.player = player
+    local world = player.world.light
+
+    self.light = world.newLight(player.x, player.y, 255, 127, 63, FLASHLIGHT_RANGE)
     self.light.setGlowStrength(0.1)
     self.light.setSmooth(0.5)
 
-    self.body = world.newCircle(x, y, PLAYER_RADIUS)
+    self.body = world.newCircle(player.x, player.y, PLAYER_RADIUS)
     self.light.setAngle(math.pi / 3)
 
     self.active = true
@@ -24,12 +28,12 @@ function FlashlightComponent:init(world, x, y)
     end)
 end
 
-function FlashlightComponent:update(player, dt)
-    self.light.setPosition(player.x, player.y)
-    self.light.setDirection(player.direction)
+function FlashlightComponent:update(dt)
+    self.light.setPosition(self.player.x, self.player.y)
+    self.light.setDirection(self.player.direction)
 
-    self.body.setX(player.x)
-    self.body.setY(player.y)
+    self.body.setX(self.player.x)
+    self.body.setY(self.player.y)
 end
 
 return FlashlightComponent

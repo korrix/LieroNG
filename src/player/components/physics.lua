@@ -4,13 +4,17 @@ PhysicsComponent = Class {__includes = Component}
 
 local JUMP_SIZE = 64
 
-function PhysicsComponent:init(world, x, y, category)
-    self.body = LP.newBody(world, x, y, "dynamic")
+function PhysicsComponent:init(player)
+    player:register_component(self)
+    self.player = player
+
+    self.body = LP.newBody(player.world.physics, player.x, player.y, "dynamic")
     self.body:setFixedRotation(true)
     self.shape = LP.newCircleShape(PLAYER_RADIUS - 0.5)
     self.fixture = LP.newFixture(self.body, self.shape, 1)
     self.fixture:setFriction(0.3)
     self.fixture:setRestitution(0.4)
+    self.fixture:setCategory(player.id)
 
     self.canJump = false
     self.jumpDirection = Vector(0, 0)
@@ -43,18 +47,11 @@ function PhysicsComponent:init(world, x, y, category)
         local v = -vec / 100
         self.body:applyLinearImpulse(v.x, v.y)
     end)
-
-    self.category_set = true
 end
 
-function PhysicsComponent:update(player, dt)
-    if self.category_set then
-        self.fixture:setCategory(player.id)
-        self.category_set = false
-    end
-
-    player.x = self.body:getX()
-    player.y = self.body:getY()
+function PhysicsComponent:update(dt)
+    self.player.x = self.body:getX()
+    self.player.y = self.body:getY()
 end
 
 function PhysicsComponent:move_right()

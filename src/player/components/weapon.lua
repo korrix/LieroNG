@@ -11,8 +11,11 @@ local RANGE    = 10000
 local BULLET_RADIUS = 2.5
 local BULLET_LIFETIME = 10
 
-function WeaponComponent:init(world)
-    self.world  = world
+function WeaponComponent:init(player)
+    player:register_component(self)
+    self.player = player
+    self.world  = player.world.physics
+
     self.active = false
     self.radius = 10
 
@@ -30,9 +33,7 @@ function WeaponComponent:init(world)
     end)
 end
 
-function WeaponComponent:update(player, dt)
-    self.player = player
-
+function WeaponComponent:update(dt)
     if self.load_level < LOAD_LAG then
         self.load_level = self.load_level + dt
     elseif self.active then
@@ -84,12 +85,14 @@ function WeaponComponent:fire()
     Signal.emit("action:fire", vec)
 end
 
-function WeaponComponent:draw(player)
+function WeaponComponent:draw()
     LG.setColor(0, 0, 0, 255)
-    local vec = Vector(player.x, player.y) + Vector(0, -RANGE):rotated(-player.direction)
+    local vec = Vector(self.player.x, self.player.y)
+              + Vector(0, -RANGE):rotated(-self.player.direction)
     _.each(self.bullets, function(bullet)
         LG.circle("fill", bullet.body:getX(), bullet.body:getY(), BULLET_RADIUS)
     end)
+
     LG.setColor(255, 255, 255, 255)
 end
 

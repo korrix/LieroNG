@@ -2,12 +2,14 @@ Player = Class {}
 
 PlayerIdFactory = 1
 
-function Player:init(components)
-    self.x = 0
-    self.y = 0
+function Player:init(world)
+    self.world = world
+
+    self.x = 64
+    self.y = 64
     self.direction = -math.pi / 4
 
-    self.components = components
+    self.components = {}
 
     self.id = PlayerIdFactory
     PlayerIdFactory = PlayerIdFactory + 1 -- FIXME: Very nasty solution
@@ -39,19 +41,17 @@ end
 
 function Player:register_component(component)
     _.push(self.components, component)
-    return component
 end
 
 function Player:update(dt)
     self.direction = self.direction % (2 * math.pi)
-    Signal.emit("hud:text", self.idrection)
     _.each(self.components, function(component)
-        component:update(self, dt)
+        component:update(dt)
     end)
 end
 
 function Player:draw()
     _.each(self.components, function(component)
-        component:draw(self)
+        component:draw()
     end)
 end
