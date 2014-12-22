@@ -2,6 +2,8 @@ HUD = Class {}
 
 local GS = 18 -- Grid size
 
+local FONT = Font.proggy[2 * GS]
+
 function HUD:init(player)
     self.vars = player.hud_variables
 
@@ -18,8 +20,9 @@ function HUD:update(dt)
 end
 
 function HUD:draw()
+    LG.setFont(FONT)
     local t = _.join(self.text, '\n')
-    LG.print("Current FPS: " .. tostring(self.fps) .. "\n" .. t, 12, 10)
+    LG.print("FPS: " .. tostring(self.fps) .. "\n" .. t, GS, GS)
 
     local player_life = self.vars.life()
 
@@ -45,5 +48,9 @@ function HUD:draw()
         LG.rectangle("line", GS - 1, Height - 2*GS - 1, load_level + 2, GS + 2)
     end
 
-    LG.setColor(255,255,255,255)
+    LG.setColor(255,255,255,200)
+    local kills = self.vars.kills()
+    local deaths = self.vars.deaths()
+    LG.print(tostring(kills) .. 'K / ' .. tostring(deaths) .. 'D',
+             GS, Height - 4.9*GS - 1)
 end

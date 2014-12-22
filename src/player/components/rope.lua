@@ -48,6 +48,12 @@ function RopeComponent:init(player, player_body)
     end)
 end
 
+function RopeComponent:respawn()
+    self.length      = ROPE_LENGTH
+    self.direction   = 0
+    self.state       = RopeState.inactive
+end
+
 function RopeComponent:getInactive()
     return Vector(self.player_body:getX(), self.player_body:getY()) - Vector(0, 2 * PLAYER_RADIUS):rotated(self.direction)
 end

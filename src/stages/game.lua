@@ -27,8 +27,8 @@ end
 function game:init()
     world        = World(Level.testmap)
     local_player = create_player(world, 64, 64)
-    hud          = HUD(create_player(world, 192, 64))
-
+    hud          = HUD(local_player)
+create_player(world, 192, 64)
     local c_camera = Component.camera(local_player)
     controller = Controller(local_player.id)
     world:set_camera(c_camera:get_camera())

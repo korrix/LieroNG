@@ -39,6 +39,15 @@ function WeaponComponent:init(player)
     })
 end
 
+function WeaponComponent:respawn()
+    self.load_level = 0
+    self.ammo = ROUND_SIZE
+    _.each(self.bullets, function(bullet)
+        bullet.body:destroy()
+    end)
+    self.bullets = {}
+end
+
 function WeaponComponent:update(dt)
     if self.load_level < 1 and self.ammo > 0 then
         self.load_level = self.load_level + dt * (1 - LOAD_LAG)
@@ -83,7 +92,7 @@ function WeaponComponent:fire()
     bullet.fixture = LP.newFixture(bullet.body, bullet.shape, 1)
     bullet.fixture:setRestitution(0.5)
 
-    local frag = math.floor(BULLET_FRAG * math.abs(love.math.randomNormal(1, 0.75)))
+    local frag = math.floor(BULLET_FRAG * math.abs(love.math.randomNormal(1, 1)))
     bullet.fixture:setUserData({
         type = "bullet", collision = nil,
         owner = self.player.id, frag = frag,

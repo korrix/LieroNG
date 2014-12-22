@@ -2,6 +2,7 @@ Player = Class {}
 
 PlayerIdFactory = 1
 
+local RESPAWN_TIME = 2.5
 function Player:init(world, x, y)
     self.world = world
 
@@ -61,8 +62,8 @@ function Player:init(world, x, y)
 
     self:register_hud({
         life   = function () return self.life end,
-        kills  = function () return self.deaths end,
-        deaths = function () return self.kills end
+        kills  = function () return self.kills end,
+        deaths = function () return self.deaths end
     })
 end
 
@@ -71,7 +72,7 @@ function Player:die()
     _.each(self.components, function(component)
         component:respawn()
     end)
-    self.life = 100
+    Timer.tween(RESPAWN_TIME, self, {life = 100})
 end
 
 function Player:register(signal, action)

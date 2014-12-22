@@ -27,7 +27,6 @@ function beginContact(a, b, coll)
     end
 
     if a_obj.type == "player" and b_obj.type == "bullet" then
-        Signal.emit("hud:text", "Hit!")
         Signal.emit("action:hit", a_obj.id, b_obj.owner, b_obj.frag)
         b_obj.life = 0
         b:setUserData(b_obj)
