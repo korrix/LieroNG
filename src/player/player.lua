@@ -1,11 +1,16 @@
 Player = Class {}
 
+PlayerIdFactory = 1
+
 function Player:init(components)
     self.x = 0
     self.y = 0
     self.direction = -math.pi / 4
 
     self.components = components
+
+    self.id = PlayerIdFactory
+    PlayerIdFactory = PlayerIdFactory + 1 -- FIXME: Very nasty solution
 
     local function tween_direction(new_direction)
         Timer.tween(0.2, self, {direction = new_direction})

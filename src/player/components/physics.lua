@@ -4,7 +4,7 @@ PhysicsComponent = Class {__includes = Component}
 
 local JUMP_SIZE = 64
 
-function PhysicsComponent:init(world, x, y)
+function PhysicsComponent:init(world, x, y, category)
     self.body = LP.newBody(world, x, y, "dynamic")
     self.body:setFixedRotation(true)
     self.shape = LP.newCircleShape(PLAYER_RADIUS - 0.5)
@@ -38,9 +38,21 @@ function PhysicsComponent:init(world, x, y)
     Signal.register('key:jump', function()
         self:jump()
     end)
+
+    Signal.register('action:fire', function(vec)
+        local v = -vec / 100
+        self.body:applyLinearImpulse(v.x, v.y)
+    end)
+
+    self.category_set = true
 end
 
 function PhysicsComponent:update(player, dt)
+    if self.category_set then
+        self.fixture:setCategory(player.id)
+        self.category_set = false
+    end
+
     player.x = self.body:getX()
     player.y = self.body:getY()
 end

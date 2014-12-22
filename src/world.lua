@@ -1,6 +1,7 @@
 World = Class {}
 
 local GFORCE = 9.81
+local GROUND_CATEGORY = 16
 
 function World:init(level)
     self.level = level
@@ -47,6 +48,7 @@ function World:__init_physics()
     local bgBodies = self.level:initWorldCollision(self.physics)
     _.each(bgBodies, function(body)
         body.fixture:setUserData({type = "ground"})
+        body.fixture:setCategory(GROUND_CATEGORY)
     end)
 end
 

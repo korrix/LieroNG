@@ -44,3 +44,7 @@ end
 function math.sgn(a)
   return a > 0 and 1 or a == 0 and 0 or -1
 end
+
+function math.clamp(a, rmin, rmax)
+  return math.max(rmin, math.min(a, rmax))
+end

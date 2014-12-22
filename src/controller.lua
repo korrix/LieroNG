@@ -12,7 +12,6 @@ function Controller:init()
                       , s = s('key:down')
                       , a = s('key:left')
                       , d = s('key:right')
-                      , f = s('key:fire')
                       , g = s('key:jump')
                       },
 
@@ -27,11 +26,13 @@ function Controller:init()
                      , a = s('key:left_press')
                      , d = s('key:right_press')
                      , q = s('key:flashlight_toggle')
+                     , f = s('key:trigger_press')
+                     , escape = function() love.event.quit() end
                      },
 
         press_mod = { g = s('key:rope') },
 
-        relase_main = {},
+        relase_main = { f = s('key:trigger_relase') },
         relase_mod = {h = function() self.mod_active = false end},
     }
 
