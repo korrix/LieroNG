@@ -10,6 +10,7 @@ local DAMAGE   = 10
 local RANGE    = 10000
 local BULLET_RADIUS = 2.5
 local BULLET_LIFETIME = 10
+local BULLET_FRAG = 10
 
 function WeaponComponent:init(player)
     player:register_component(self)
@@ -24,11 +25,11 @@ function WeaponComponent:init(player)
 
     self.bullets = {}
 
-    Signal.register("key:trigger_press", function()
+    player:register("key:trigger_press", function()
         self.active = true
     end)
 
-    Signal.register("key:trigger_relase", function()
+    player:register("key:trigger_relase", function()
         self.active = false
     end)
 end
@@ -41,16 +42,19 @@ function WeaponComponent:update(dt)
         self:shoot()
     end
 
+    local alive = {}
     _.each(self.bullets, function(bullet)
-        bullet.life = bullet.life - dt
-        if bullet.life < 0 then
+        local p = bullet.fixture:getUserData()
+        p.life = p.life - dt
+        if p.life < 0 then
             bullet.body:destroy()
+        else
+            bullet.fixture:setUserData(p)
+            _.push(alive, bullet)
         end
     end)
 
-    self.bullets = _.reject(self.bullets, function(bullet)
-        return bullet.life < 0
-    end)
+    self.bullets = alive
 end
 
 function WeaponComponent:shoot()
@@ -66,15 +70,19 @@ end
 
 function WeaponComponent:fire()
     local bullet = {}
-    bullet.life = BULLET_LIFETIME
-
     bullet.body = LP.newBody(self.world, self.player.x, self.player.y, "dynamic")
     bullet.body:setFixedRotation(true)
     bullet.body:setBullet(true)
     bullet.shape = LP.newCircleShape(BULLET_RADIUS)
     bullet.fixture = LP.newFixture(bullet.body, bullet.shape, 1)
     bullet.fixture:setRestitution(0.5)
-    bullet.fixture:setUserData({type = "bullet", collision = nil})
+
+    local frag = math.floor(BULLET_FRAG * love.math.randomNormal(1, 0.75))
+    bullet.fixture:setUserData({
+        type = "bullet", collision = nil,
+        owner = self.player.id, frag = frag,
+        life = BULLET_LIFETIME})
+
     bullet.fixture:setCategory(self.player.id)
     bullet.fixture:setMask(self.player.id)
 
@@ -82,7 +90,7 @@ function WeaponComponent:fire()
     bullet.body:applyLinearImpulse(vec.x, vec.y)
 
     _.push(self.bullets, bullet)
-    Signal.emit("action:fire", vec)
+    self.player:emit("action:fire", vec)
 end
 
 function WeaponComponent:draw()

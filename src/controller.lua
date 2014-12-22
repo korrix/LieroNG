@@ -1,8 +1,8 @@
 Controller = Class {}
 
-function Controller:init()
+function Controller:init(player_id)
     local function s(name)
-        return function () Signal.emit(name) end
+        return function () Signal.emit(name, player_id) end
     end
 
     self.mod_active = false

@@ -18,7 +18,7 @@ function FlashlightComponent:init(player)
 
     self.active = true
 
-    Signal.register("key:flashlight_toggle", function()
+    player:register("key:flashlight_toggle", function()
         self.active = not self.active
         if self.active then
             self.light.setRange(FLASHLIGHT_RANGE)

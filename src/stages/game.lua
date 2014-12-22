@@ -6,46 +6,49 @@ require("src.hud")
 
 local game = {}
 
-local world      = nil
-local player     = nil
-local controller = nil
-local hud        = nil
+local world        = nil
+local local_player = nil
+local players      = {}
+local controller   = nil
+local hud          = nil
 
-local lightMouse = nil -- debug only
+function create_player(world, x, y)
+    local player =  Player(world, x, y)
+    local c_physics = Component.physics(player)
+    Component.rope(player, c_physics.body)
+    Component.flashlight(player)
+    Component.sprite(player) -- TODO: Player sprites
+    Component.weapon(player)
+    Component.laser_sight(player)
+    _.push(players, player)
+    return player
+end
 
 function game:init()
     world = World(Level.testmap)
     hud   = HUD()
 
-    player = Player(world)
-    local c_physics = Component.physics(player)
-    local c_light   = Component.flashlight(player)
-    local c_rope    = Component.rope(player, c_physics.body)
-    local c_camera  = Component.camera(player)
-    local c_sprite  = Component.sprite(player)
-    local c_weapon  = Component.weapon(player)
-    local c_laser   = Component.laser_sight(player)
-
-    controller = Controller()
+    local_player = create_player(world, 64, 64)
+    create_player(world, 192, 64)
+    local c_camera = Component.camera(local_player)
+    controller = Controller(local_player.id)
     world:set_camera(c_camera:get_camera())
-
-    -- debug only
-    lightMouse = world.light.newLight(0, 0, 255, 127, 63, 300)
-    lightMouse.setGlowStrength(0.3)
 end
 
 function game:update(dt)
     controller:update(dt)
     world:update(dt)
-    player:update(dt)
-    hud:update(dt)
 
-    lightMouse.setPosition(world.mouse.x, world.mouse.y)
+    _.each(players, function (player)
+        player:update(dt)
+    end)
+
+    hud:update(dt)
 end
 
 function game:draw()
     LG.clear()
-    world:draw({player})
+    world:draw(players)
     hud:draw()
 end
 

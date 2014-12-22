@@ -30,15 +30,15 @@ function RopeComponent:init(player, player_body)
 
     self:catch()
 
-    Signal.register("key:rope", function ()
+    player:register("key:rope", function ()
         self:trigger()
     end)
 
-    Signal.register("key:jump", function ()
+    player:register("key:jump", function ()
         if self.state == RopeState.active then self:catch() end
     end)
 
-    Signal.register("key:climb", function ()
+    player:register("key:climb", function ()
         if self.state == RopeState.active and self.spot then
             local antigravity = -Vector(world:getGravity()) * self.player_body:getMass()
             local direction = self.spot - Vector(self.player_body:getX(), self.player_body:getY())

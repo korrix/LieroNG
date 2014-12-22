@@ -2,11 +2,11 @@ Player = Class {}
 
 PlayerIdFactory = 1
 
-function Player:init(world)
+function Player:init(world, x, y)
     self.world = world
 
-    self.x = 64
-    self.y = 64
+    self.x = x
+    self.y = y
     self.direction = -math.pi / 4
 
     self.components = {}
@@ -18,25 +18,37 @@ function Player:init(world)
         Timer.tween(0.2, self, {direction = new_direction})
     end
 
-    Signal.register('key:up', function()
+    self:register('key:up', function()
         tween_direction(self.direction - math.pi / 90)
     end)
 
-    Signal.register('key:down', function()
+    self:register('key:down', function()
         tween_direction(self.direction + math.pi / 90)
     end)
 
-    Signal.register('key:right_press', function()
+    self:register('key:right_press', function()
         if self.direction < math.pi then
             self.direction = 2 * math.pi - self.direction
         end
     end)
 
-    Signal.register('key:left_press', function()
+    self:register('key:left_press', function()
         if self.direction >= math.pi then
             self.direction = 2 * math.pi - self.direction
         end
     end)
+end
+
+function Player:register(signal, action)
+    Signal.register(signal, function(id, ...)
+        if id == self.id then
+            action(...)
+        end
+    end)
+end
+
+function Player:emit(signal, ...)
+    Signal.emit(signal, self.id, ...)
 end
 
 function Player:register_component(component)

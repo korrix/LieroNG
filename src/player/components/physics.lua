@@ -21,6 +21,7 @@ function PhysicsComponent:init(player)
 
     self.fixture:setUserData({
         type = "player",
+        id = player.id,
 
         setCanJump = function (canJump)
             self.canJump = canJump
@@ -31,19 +32,19 @@ function PhysicsComponent:init(player)
         end
     })
 
-    Signal.register('key:right', function()
+    player:register('key:right', function()
         self:move_right()
     end)
 
-    Signal.register('key:left', function()
+    player:register('key:left', function()
         self:move_left()
     end)
 
-    Signal.register('key:jump', function()
+    player:register('key:jump', function()
         self:jump()
     end)
 
-    Signal.register('action:fire', function(vec)
+    player:register('action:fire', function(vec)
         local v = -vec / 100
         self.body:applyLinearImpulse(v.x, v.y)
     end)
