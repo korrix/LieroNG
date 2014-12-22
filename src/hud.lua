@@ -49,8 +49,8 @@ function HUD:draw()
     end
 
     LG.setColor(255,255,255,200)
-    local kills = self.vars.kills()
-    local deaths = self.vars.deaths()
-    LG.print(tostring(kills) .. 'K / ' .. tostring(deaths) .. 'D',
-             GS, Height - 4.9*GS - 1)
+    LG.print('Player' .. tostring(self.vars.id()) .. ' '
+                       .. tostring(self.vars.kills()) .. 'K / '
+                       .. tostring(self.vars.deaths()) .. 'D',
+            GS, Height - 4.9*GS - 1)
 end

@@ -34,16 +34,11 @@ Level    = nil
 Width         = nil
 Height        = nil
 PLAYER_RADIUS = 12
-Network       = nil
-
--- Networking
-require("src.network")
 
 function love.load()
   Width, Height = love.window.getDimensions()
 
   require("src.load_resources")
-  Network = NetworkController("127.0.0.1", 5555)
 
   Gamestate.registerEvents()
   Gamestate.switch(Stage.game)

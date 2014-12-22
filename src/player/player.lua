@@ -63,7 +63,8 @@ function Player:init(world, x, y)
     self:register_hud({
         life   = function () return self.life end,
         kills  = function () return self.kills end,
-        deaths = function () return self.deaths end
+        deaths = function () return self.deaths end,
+        id     = function () return self.id end
     })
 end
 
