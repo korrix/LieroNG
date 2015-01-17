@@ -5,49 +5,51 @@ require("src.hud")
 
 local game = {}
 
-local world        = nil
-local local_player = nil
-local players      = {}
-local hud          = nil
+local world   = nil
+local hud     = nil
+
+local player1 = nil
+local cam1    = nil
+
+local player2 = nil
+local cam2    = nil
 
 function create_player(world, x, y, w, s, a, d, f, g, h, q)
     local player =  Player(world, x, y)
     local c_physics = Component.physics(player)
+    local c_camera = Component.camera(player)
     Component.rope(player, c_physics.body)
     Component.flashlight(player)
     Component.sprite(player) -- TODO: Player sprites
     Component.weapon(player)
     Component.laser_sight(player)
     Component.controller(player, w, s, a, d, f, g, h, q)
-    _.push(players, player)
-    return player
+
+    return player, c_camera
 end
 
 function game:init()
-    world        = World(Level.testmap)
-    local_player = create_player(world, 64, 64, 'w', 's', 'a', 'd', 'f', 'g', 'h', 'q')
-    hud          = HUD(local_player)
+    world         = World(Level.testmap)
+    player1, cam1 = create_player(world, 64, 64, 'w', 's', 'a', 'd', 'f', 'g', 'h', 'q')
+    player2, cam2 = create_player(world, 192, 64, 'up', 'down', 'left', 'right', 'kp1', 'kp2', 'kp3', 'kp0')
 
-    create_player(world, 192, 64, 'up', 'down', 'left', 'right', 'kp1', 'kp2', 'kp3', 'kp0')
+    hud          = HUD(player1, player2)
 
-    local c_camera = Component.camera(local_player)
-    -- controller = Controller(local_player.id, 'w', 's', 'a', 'd', 'f', 'g', 'h')
-    world:set_camera(c_camera:get_camera())
+    world:set_camera(cam1:get_camera())
 end
 
 function game:update(dt)
     world:update(dt)
 
-    _.each(players, function (player)
-        player:update(dt)
-    end)
+    player1:update(dt)
+    player2:update(dt)
 
     hud:update(dt)
 end
 
 function game:draw()
     LG.clear()
-    world:draw(players, hud)
+    world:draw(player1, player2, hud)
 end
 
 function game:keypressed(key, code)
@@ -55,15 +57,13 @@ function game:keypressed(key, code)
         love.event.quit()
     end
 
-    _.each(players, function (player)
-        player:keypressed(key)
-    end)
+    player1:keypressed(key)
+    player2:keypressed(key)
 end
 
 function game:keyreleased(key, code)
-    _.each(players, function (player)
-        player:keyreleased(key)
-    end)
+    player1:keyreleased(key)
+    player2:keyreleased(key)
 end
 
 function game:mousepressed(x, y, button)

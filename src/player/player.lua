@@ -70,6 +70,7 @@ end
 
 function Player:die()
     self.deaths = self.deaths + 1
+
     _.each(self.components, function(component)
         component:respawn()
     end)

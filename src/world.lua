@@ -94,7 +94,7 @@ function World:set_camera(camera)
     self.camera = camera
 end
 
-function World:draw(objects, hud)
+function World:draw(player1, player2, hud)
     self.light.setTranslation(get_light_translation(self.camera))
 
     self.camera:attach()
@@ -105,9 +105,8 @@ function World:draw(objects, hud)
     LG.setBlendMode("alpha")
     self.level:draw()
 
-    _.each(objects, function(obj)
-        obj:draw()
-    end)
+    player1:draw()
+    player2:draw()
 
     self.light.drawShadow()
     self.light.drawShine()

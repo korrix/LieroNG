@@ -4,8 +4,9 @@ local GS = 18 -- Grid size
 
 local FONT = Font.proggy[2 * GS]
 
-function HUD:init(player)
-    self.vars = player.hud_variables
+function HUD:init(player1, player2)
+    self.v1 = player1.hud_variables
+    self.v2 = player2.hud_variables
 
     self.fps = 0
     self.text = {}
@@ -19,38 +20,50 @@ function HUD:update(dt)
     self.fps = love.timer.getFPS()
 end
 
+function HUD:draw_bars(v, side)
+
+    local player_life = v.life()
+
+    local bar_size   = v.round_size() * GS
+
+    local offset = side == "right" and (Width - bar_size - 2*GS)  or 0
+
+    local load_level = math.clamp(v.load_level(), 0, 1) * bar_size
+
+    local life = bar_size * player_life / 100
+    local life_c = player_life * 255 / 100
+
+    local ammo = v.ammo() + 1
+
+    LG.setColor(255 - life_c, life_c, 0, 255)
+
+    LG.rectangle("line", offset + GS - 1, Height - 3.5*GS - 1, bar_size + 2, GS + 2)
+    LG.rectangle("fill", offset + GS, Height - 3.5*GS, life, GS)
+
+    LG.setColor(255, 255, 255, 255)
+
+    _.each(_.range(0, v.round_size()), function(i)
+        local mode = i < v.ammo() and "fill" or "line"
+        local pos = GS * (i + 1.5)
+        LG.circle(mode, offset + pos, Height - 1.5*GS, GS / 4)
+    end)
+
+    if load_level > 0 then
+        LG.rectangle("line", offset + GS - 1, Height - 2*GS - 1, load_level + 2, GS + 2)
+    end
+
+    LG.setColor(255,255,255,200)
+    LG.print('Player' .. tostring(v.id()) .. ' '
+                       .. tostring(v.kills()) .. 'K / '
+                       .. tostring(v.deaths()) .. 'D',
+            offset + GS, Height - 4.9*GS - 1)
+end
+
 function HUD:draw()
     LG.setFont(FONT)
     local t = _.join(self.text, '\n')
     LG.print("FPS: " .. tostring(self.fps) .. "\n" .. t, GS, GS)
 
-    local player_life = self.vars.life()
-
-    local bar_size   = self.vars.round_size() * GS
-    local load_level = math.clamp(self.vars.load_level(), 0, 1) * bar_size
-
-    local life = bar_size * player_life / 100
-    local life_c = player_life * 255 / 100
-    LG.setColor(255 - life_c, life_c, 0, 255)
-
-    LG.rectangle("line", GS - 1, Height - 3.5*GS - 1, bar_size + 2, GS + 2)
-    LG.rectangle("fill", GS, Height - 3.5*GS, life, GS)
-
-    LG.setColor(255, 255, 255, 255)
-    local ammo = self.vars.ammo() + 1
-    _.each(_.range(0, self.vars.round_size()), function(i)
-        local mode = i < self.vars.ammo() and "fill" or "line"
-        local pos = GS * (i + 1.5)
-        LG.circle(mode, pos, Height - 1.5*GS, GS / 4)
-    end)
-
-    if load_level > 0 then
-        LG.rectangle("line", GS - 1, Height - 2*GS - 1, load_level + 2, GS + 2)
-    end
-
-    LG.setColor(255,255,255,200)
-    LG.print('Player' .. tostring(self.vars.id()) .. ' '
-                       .. tostring(self.vars.kills()) .. 'K / '
-                       .. tostring(self.vars.deaths()) .. 'D',
-            GS, Height - 4.9*GS - 1)
+    self:draw_bars(self.v1, "left")
+    self:draw_bars(self.v2, "right")
 end
