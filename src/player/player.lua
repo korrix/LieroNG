@@ -103,6 +103,18 @@ function Player:update(dt)
     end)
 end
 
+function Player:keypressed(key)
+    _.each(self.components, function(component)
+        component:keypressed(key)
+    end)
+end
+
+function Player:keyreleased(key)
+    _.each(self.components, function(component)
+        component:keyreleased(key)
+    end)
+end
+
 function Player:draw()
     _.each(self.components, function(component)
         component:draw()
