@@ -4,9 +4,7 @@ local GS = 18 -- Grid size
 
 local FONT = Font.proggy[2 * GS]
 
-function HUD:init(player1, player2)
-    self.v1 = player1.hud_variables
-    self.v2 = player2.hud_variables
+function HUD:init()
 
     self.fps = 0
     self.text = {}
@@ -59,11 +57,11 @@ function HUD:draw_bars(v, side)
             offset + GS, Height - 4.9*GS - 1)
 end
 
-function HUD:draw()
+function HUD:draw(player1, player2)
     LG.setFont(FONT)
     local t = _.join(self.text, '\n')
     LG.print("FPS: " .. tostring(self.fps) .. "\n" .. t, GS, GS)
 
-    self:draw_bars(self.v1, "left")
-    self:draw_bars(self.v2, "right")
+    self:draw_bars(player1.hud_variables, "left")
+    self:draw_bars(player2.hud_variables, "right")
 end

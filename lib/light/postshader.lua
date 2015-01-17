@@ -154,14 +154,17 @@ love.postshader.addEffect = function(shader, ...)
 	end
 end
 
-love.postshader.draw = function()
+love.postshader.draw = function(buffer)
 	if LOVE_POSTSHADER_LAST_BUFFER then
 		love.graphics.setBackgroundColor(0, 0, 0)
 		love.graphics.setBlendMode("alpha")
 		love.graphics.setCanvas()
 		love.graphics.setShader()
 		love.graphics.setColor(255, 255, 255)
+
+		love.graphics.setCanvas(buffer)
 		love.graphics.draw(LOVE_POSTSHADER_LAST_BUFFER)
+		love.graphics.setCanvas()
 	end
 end
 

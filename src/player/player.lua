@@ -98,6 +98,8 @@ function Player:register_component(component)
 end
 
 function Player:update(dt)
+    if self.life > 100 then self.life = 100 end
+
     self.direction = self.direction % (2 * math.pi)
     _.each(self.components, function(component)
         component:update(dt)

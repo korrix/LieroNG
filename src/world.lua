@@ -5,7 +5,6 @@ local GROUND_CATEGORY = 16
 
 function World:init(level)
     self.level = level
-    self.mouse = {x = 0, y = 0}
 
     self:__init_physics()
     self:__init_light()
@@ -87,14 +86,13 @@ end
 
 function World:update(dt)
     self.physics:update(dt)
-    self.mouse.x, self.mouse.y = self.camera:mousepos()
 end
 
 function World:set_camera(camera)
     self.camera = camera
 end
 
-function World:draw(player1, player2, hud)
+function World:draw(player1, player2)
     self.light.setTranslation(get_light_translation(self.camera))
 
     self.camera:attach()
@@ -116,10 +114,4 @@ function World:draw(player1, player2, hud)
     self.light.drawRefraction()
 
     self.camera:detach()
-
-    hud:draw()
-
-    love.postshader.addEffect("bloom", 2.0, 2.0)
-    love.postshader.addEffect("scanlines")
-    love.postshader.draw()
 end

@@ -5,6 +5,6 @@ function love.conf(t)
   t.window.icon       = nil -- TODO
   t.window.width      = 1080
   t.window.height     = 640
-  t.window.fullscreen = false
+  t.window.fullscreen = true
   t.window.borderless = true -- Just for tests
 end
