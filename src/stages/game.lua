@@ -5,21 +5,16 @@ require("src.hud")
 
 local game = {}
 
-local world   = nil
-local hud     = nil
+local game_view = nil
+local world     = nil
+local hud       = nil
 
-local player1      = nil
-local cam1         = nil
-local view_player1 = nil
-
-local player2      = nil
-local cam2         = nil
-local view_player2 = nil
+local player1   = nil
+local player2   = nil
 
 function create_player(world, x, y, w, s, a, d, f, g, h, q)
     local player =  Player(world, x, y)
     local c_physics = Component.physics(player)
-    local c_camera = Component.camera(player)
     Component.rope(player, c_physics.body)
     Component.flashlight(player)
     Component.sprite(player) -- TODO: Player sprites
@@ -27,17 +22,16 @@ function create_player(world, x, y, w, s, a, d, f, g, h, q)
     Component.laser_sight(player)
     Component.controller(player, w, s, a, d, f, g, h, q)
 
-    return player, c_camera
+    return player
 end
 
 function game:init()
-    world         = World(Level.testmap)
-    player1, cam1 = create_player(world, 64, 64, 'w', 's', 'a', 'd', 'f', 'g', 'h', 'q')
-    player2, cam2 = create_player(world, 192, 64, 'up', 'down', 'left', 'right', 'kp1', 'kp2', 'kp3', 'kp0')
-    hud          = HUD()
+    world   = World(Level.testmap)
+    player1 = create_player(world, 64, 64, 'w', 's', 'a', 'd', 'f', 'g', 'h', 'q')
+    player2 = create_player(world, 192, 64, 'up', 'down', 'left', 'right', 'kp1', 'kp2', 'kp3', 'kp0')
+    hud     = HUD()
 
-    view_player1 = LG.newCanvas()
-    view_player2 = LG.newCanvas()
+    game_view = LG.newCanvas()
 end
 
 function game:update(dt)
@@ -51,46 +45,34 @@ end
 
 function game:draw()
     LG.clear()
-    view_player2:clear()
-    view_player1:clear()
+    game_view:clear()
 
-    LG.setCanvas(view_player1)
-        world:set_camera(cam1:get_camera())
+    LG.setCanvas(game_view)
         world:draw(player1, player2)
-        love.postshader.draw(view_player1)
-    LG.setCanvas()
-
-    LG.setCanvas(view_player2)
-        world:set_camera(cam2:get_camera())
-        world:draw(player1, player2)
-        love.postshader.draw(view_player2)
+        love.postshader.addEffect("bloom", 2.0, 2.0)
+        -- love.postshader.addEffect("scanlines")
+        love.postshader.draw(game_view)
     LG.setCanvas()
 
     LG.setScissor(0, 0, Width/2, Height)
     LG.push()
-    LG.translate(-Width/4, 0)
-    LG.draw(view_player1)
+        LG.translate(Width/4 - player1.x, Height/2 - player1.y)
+        LG.draw(game_view)
     LG.pop()
     LG.setScissor()
 
     LG.setScissor(Width/2, 0, Width/2, Height)
     LG.push()
-    LG.translate(Width/4, 0)
-    LG.draw(view_player2)
+        LG.translate(3*Width/4 - player2.x, Height/2 - player2.y)
+        LG.draw(game_view)
     LG.pop()
     LG.setScissor()
-
-    --
-    -- LG.draw(view_player1)
-    -- LG.setScissor()
 
     hud:draw(player1, player2)
 end
 
 function game:keypressed(key, code)
-    if key == "escape" then
-        love.event.quit()
-    end
+    if key == "escape" then love.event.quit() end
 
     player1:keypressed(key)
     player2:keypressed(key)

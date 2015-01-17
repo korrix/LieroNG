@@ -88,15 +88,7 @@ function World:update(dt)
     self.physics:update(dt)
 end
 
-function World:set_camera(camera)
-    self.camera = camera
-end
-
 function World:draw(player1, player2)
-    self.light.setTranslation(get_light_translation(self.camera))
-
-    self.camera:attach()
-
     self.light.update()
     love.postshader.setBuffer("render")
 
@@ -112,6 +104,4 @@ function World:draw(player1, player2)
     self.light.drawGlow()
     self.light.drawReflection()
     self.light.drawRefraction()
-
-    self.camera:detach()
 end
