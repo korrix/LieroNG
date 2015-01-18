@@ -3,14 +3,24 @@ HUD = Class {}
 local GS = 18 -- Grid size
 
 local FONT = Font.proggy[2 * GS]
+local FONTB = Font.proggy[4 * GS]
 
 function HUD:init()
+    self.time = 120+56
 
     self.fps = 0
     self.text = {}
     Signal.register("hud:text", function(newtext)
         if #self.text > 30 then _.pop(self.text) end
         _.unshift(self.text, newtext)
+    end)
+
+    Timer.addPeriodic(1, function()
+        if self.time > 0 then
+            self.time = self.time - 1
+        else
+            Signal.emit("action:over")
+        end
     end)
 end
 
@@ -58,6 +68,14 @@ function HUD:draw_bars(v, side)
 end
 
 function HUD:draw(player1, player2)
+    local time = string.format("%.2d:%.2d", self.time / 60, self.time % 60)
+    LG.setFont(FONTB)
+    LG.setColor(255,255,255,64)
+    LG.print(time, Width/2 - FONTB:getWidth(time)/2, GS)
+
+    LG.setColor(255,255,255,24)
+    LG.rectangle("fill", Width/2-1, 2*GS + FONTB:getHeight(time), 2, Height)
+
     LG.setFont(FONT)
     local t = _.join(self.text, '\n')
     LG.print("FPS: " .. tostring(self.fps) .. "\n" .. t, GS, GS)

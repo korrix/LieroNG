@@ -7,7 +7,7 @@ local RELOAD_TIME = 1
 local ROUND_SIZE = 12
 
 local DAMAGE   = 10
-local RANGE    = 10000
+local RANGE    = 100000
 local BULLET_RADIUS = 2.5
 local BULLET_LIFETIME = 10
 local BULLET_FRAG = 10
@@ -74,8 +74,15 @@ end
 function WeaponComponent:shoot()
     if self.ammo > 0 then
         self:fire()
+        Sound.shot:rewind()
+        Sound.shot:play()
         self.ammo = self.ammo - 1
         if self.ammo < 1 then
+            Timer.add(RELOAD_TIME - 2, function ()
+                Sound.reload:rewind()
+                Sound.reload:play()
+            end)
+
             Timer.add(RELOAD_TIME, function ()
                 self.ammo = ROUND_SIZE
             end)
@@ -106,11 +113,11 @@ function WeaponComponent:fire()
     bullet.body:applyLinearImpulse(vec.x, vec.y)
 
     _.push(self.bullets, bullet)
-    self.player:emit("action:fire", vec)
+    self.player:emit("action:fire", vec/10)
 end
 
 function WeaponComponent:draw()
-    LG.setColor(0, 0, 0, 255)
+    LG.setColor(255, 255, 255, 255)
     local vec = Vector(self.player.x, self.player.y)
               + Vector(0, -RANGE):rotated(-self.player.direction)
     _.each(self.bullets, function(bullet)

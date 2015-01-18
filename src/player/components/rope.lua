@@ -140,7 +140,7 @@ function RopeComponent:update(dt)
 end
 
 function RopeComponent:draw()
-    LG.setColor(0, 0, 255, 255)
+    LG.setColor(0, 128, 0, 255)
     LG.circle("fill", self.body:getX(), self.body:getY(), PLAYER_RADIUS / 3)
     LG.line(self.player.x, self.player.y, self.body:getX(), self.body:getY())
     LG.setColor(255, 255, 255, 255)

@@ -31,11 +31,12 @@ return {
   layers = {
     {
       type = "imagelayer",
-      name = "Parallax1",
+      name = "ImgBg",
+      x = 0,
+      y = 0,
       visible = true,
       opacity = 1,
       image = "../gfx/background.jpg",
-      transparentcolor = "#ff00ff",
       properties = {}
     },
     {

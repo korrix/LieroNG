@@ -11,3 +11,8 @@ id = nil
 -- Light and Shadow
 curPolygon = nil
 args       = nil
+
+-- Jumper
+drAround = nil
+isOutOfRange = nil
+walkable = nil

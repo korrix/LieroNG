@@ -16,6 +16,9 @@ Signal    = require("lib.hump.signal")
 Timer     = require("lib.hump.timer")
 Vector    = require("lib.hump.vector")
 
+Grid       = require("lib.jumper.jumper.grid")
+Pathfinder = require("lib.jumper.jumper.pathfinder")
+
 -- Shortcuts
 L  = love
 LG = love.graphics

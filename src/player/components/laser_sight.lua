@@ -2,7 +2,7 @@ require("src.player.component")
 
 LaserSightComponent = Class {__includes = Component}
 
-local RANGE = 1000
+local RANGE = 2000
 function LaserSightComponent:init(player)
     player:register_component(self)
     self.player = player

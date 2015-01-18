@@ -59,7 +59,7 @@ end
 
 function World:__init_light()
     self.light = LL.newWorld()
-    self.light.setAmbientColor(15, 15, 31)
+    self.light.setAmbientColor(30, 30, 60)
     self.light.setRefractionStrength(16.0)
     self.light.setReflectionVisibility(0.75)
 

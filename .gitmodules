@@ -10,3 +10,6 @@
 [submodule "lib/inspect"]
 	path = lib/inspect
 	url = https://github.com/kikito/inspect.lua
+[submodule "lib/jumper"]
+	path = lib/jumper
+	url = git://github.com/Yonaba/Jumper.git

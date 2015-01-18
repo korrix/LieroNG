@@ -19,7 +19,7 @@ Shader = Loader("src/shaders/", function(item_path)
 end)
 
 Sound = Loader("sfx/", function(item_path)
-  return love.audio.newSource(item_path)
+  return love.audio.newSource(item_path, "static")
 end)
 
 local quad_factory = {}

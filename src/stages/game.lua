@@ -27,11 +27,17 @@ end
 
 function game:init()
     world   = World(Level.testmap)
-    player1 = create_player(world, 64, 64, 'w', 's', 'a', 'd', 'f', 'g', 'h', 'q')
-    player2 = create_player(world, 192, 64, 'up', 'down', 'left', 'right', 'kp1', 'kp2', 'kp3', 'kp0')
+    player1 = create_player(world, 24 * 2.5 , 24 * 2, 'w', 's', 'a', 'd', 'f', 'g', 'h', 'q')
+    player2 = create_player(world, 24 * 45.5, 24 * 2, 'up', 'down', 'left', 'right', 'kp1', 'kp2', 'kp3', 'kp0')
     hud     = HUD()
 
-    game_view = LG.newCanvas()
+    game_view = LG.newCanvas(2048, 2048)
+
+    Signal.register("action:over", function ()
+        Gamestate.switch(Stage.over, player1.kills, player2.kills)
+    end)
+
+    -- Sound.ussr:play()
 end
 
 function game:update(dt)
@@ -47,12 +53,11 @@ function game:draw()
     LG.clear()
     game_view:clear()
 
-    LG.setCanvas(game_view)
+    love.postshader.setBuffer("render")
         world:draw(player1, player2)
         love.postshader.addEffect("bloom", 2.0, 2.0)
-        -- love.postshader.addEffect("scanlines")
-        love.postshader.draw(game_view)
-    LG.setCanvas()
+        love.postshader.addEffect("scanlines")
+    love.postshader.draw(game_view)
 
     LG.setScissor(0, 0, Width/2, Height)
     LG.push()
