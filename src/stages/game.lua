@@ -37,7 +37,7 @@ function game:init()
         Gamestate.switch(Stage.over, player1.kills, player2.kills)
     end)
 
-    -- Sound.ussr:play()
+    Sound.ussr:play()
 end
 
 function game:update(dt)

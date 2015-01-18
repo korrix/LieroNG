@@ -6,7 +6,7 @@ local FONT = Font.proggy[2 * GS]
 local FONTB = Font.proggy[4 * GS]
 
 function HUD:init()
-    self.time = 120+56
+    self.time = 2*60+56
 
     self.fps = 0
     self.text = {}
